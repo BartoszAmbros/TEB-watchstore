@@ -17,8 +17,8 @@ const data = [
         id: 3,
         name: "Breitling Superocean Heritage",
         img: "https://m.media-amazon.com/images/I/61hGDiWBU8L._AC_UY879_.jpg",
-        price: 40,
-        category: "Sport",
+        price: 200,
+        category: "Luxury",
     },
     {
         id: 4,
@@ -38,8 +38,8 @@ const data = [
         id: 6,
         name: "Timex Men's Expedition Scout",
         img: "https://m.media-amazon.com/images/I/91WvnZ1g40L._AC_UY879_.jpg",
-        price: 200,
-        category: "Luxury",
+        price: 40,
+        category: "Sport",
     },
 ]
 
@@ -48,6 +48,7 @@ const searchInput = document.querySelector('.search');
 const categoriesContainer = document.querySelector('.categories');
 const priceRange = document.querySelector('.priceRange');
 const priveValue = document.querySelector('.priceValue');
+
 
 function listProducts(filteredProducts) {
     productsContainer.innerHTML = filteredProducts.map((product) => `
@@ -69,5 +70,33 @@ function searchProducts(event) {
     }
 }
 
+// function categoriesList(categories) {
+//     data.filter((item) => item.category.indexOf(categories) !== 1);
+//     categoriesContainer.innerHTML = categories.map((item) => `
+//         <span class="category">${item.category}</span>
+//     `).join("");
+// }
+
+function setCategories() {
+    const allCats = data.map((item) => item.category);
+    const categories = [
+        "All",
+        ...allCats.filter((item, i) => {
+            return allCats.indexOf(item) === i;
+        })
+    ]
+
+    categoriesContainer.innerHTML = categories.map((cat) => `
+        <span class="category">${cat}</span>
+    `).join("");
+
+    categoriesContainer.addEventListener('click', function (event) {
+        const selectedCat = event.target.textContent;
+
+        selectedCat === "All" ? listProducts(data) : listProducts(data.filter((item) => item.category === selectedCat));
+    })
+}
+setCategories();
+// categoriesList(data);
 listProducts(data);
 searchInput.addEventListener('input', searchProducts);

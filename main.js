@@ -44,21 +44,30 @@ const data = [
 ]
 
 const productsContainer = document.querySelector('.products');
-const searchInput = document.querySelector('search');
+const searchInput = document.querySelector('.search');
 const categoriesContainer = document.querySelector('.categories');
 const priceRange = document.querySelector('.priceRange');
 const priveValue = document.querySelector('.priceValue');
 
-function listProducts() {
-    data.forEach(function (watch) {
-        productsContainer.innerHTML += `
+function listProducts(filteredProducts) {
+    productsContainer.innerHTML = filteredProducts.map((product) => `
         <div class="product">
-        <img src="${watch.img}" alt="watch" />
-        <span class="name">${watch.name}</span>
-        <span class="priceText">$${watch.price}</span>
-    </div>
-        `
-    })
+        <img src="${product.img}" alt="watch"/>
+        <span class="name">${product.name}</span>
+        <span class="priceText">${product.price}</span>
+        </div>
+   `).join("");
 }
 
-listProducts();
+function searchProducts(event) {
+    const value = event.target.value.toLowerCase();
+
+    if (value) {
+        listProducts(data.filter((item) => item.name.toLowerCase().indexOf(value) !== -1));
+    } else {
+        listProducts(data);
+    }
+}
+
+listProducts(data);
+searchInput.addEventListener('input', searchProducts);

@@ -48,3 +48,17 @@ const searchInput = document.querySelector('search');
 const categoriesContainer = document.querySelector('.categories');
 const priceRange = document.querySelector('.priceRange');
 const priveValue = document.querySelector('.priceValue');
+
+function listProducts() {
+    data.forEach(function (watch) {
+        productsContainer.innerHTML += `
+        <div class="product">
+        <img src="${watch.img}" alt="watch" />
+        <span class="name">${watch.name}</span>
+        <span class="priceText">$${watch.price}</span>
+    </div>
+        `
+    })
+}
+
+listProducts();

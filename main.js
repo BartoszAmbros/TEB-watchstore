@@ -47,7 +47,7 @@ const productsContainer = document.querySelector('.products');
 const searchInput = document.querySelector('.search');
 const categoriesContainer = document.querySelector('.categories');
 const priceRange = document.querySelector('.priceRange');
-const priveValue = document.querySelector('.priceValue');
+const priceValue = document.querySelector('.priceValue');
 
 
 function listProducts(filteredProducts) {
@@ -55,7 +55,7 @@ function listProducts(filteredProducts) {
         <div class="product">
         <img src="${product.img}" alt="watch"/>
         <span class="name">${product.name}</span>
-        <span class="priceText">${product.price}</span>
+        <span class="priceText">$${product.price}</span>
         </div>
    `).join("");
 }
@@ -70,12 +70,6 @@ function searchProducts(event) {
     }
 }
 
-// function categoriesList(categories) {
-//     data.filter((item) => item.category.indexOf(categories) !== 1);
-//     categoriesContainer.innerHTML = categories.map((item) => `
-//         <span class="category">${item.category}</span>
-//     `).join("");
-// }
 
 function setCategories() {
     const allCats = data.map((item) => item.category);
@@ -96,7 +90,25 @@ function setCategories() {
         selectedCat === "All" ? listProducts(data) : listProducts(data.filter((item) => item.category === selectedCat));
     })
 }
-setCategories();
-// categoriesList(data);
+
+function setPrices() {
+    const priceList = data.map((item) => item.price);
+    const minPrice = Math.min(...priceList);
+    const maxPrice = Math.max(...priceList);
+
+    priceRange.min = minPrice;
+    priceRange.max = maxPrice;
+    priceRange.value = maxPrice;
+    priceValue.textContent = "$" + maxPrice;
+
+    priceRange.addEventListener('input', function (event) {
+        priceValue.textContent = "$" + event.target.value;
+        listProducts(data.filter((item) => item.price <= event.target.value));
+    })
+}
+
+
 listProducts(data);
+setCategories();
+setPrices();
 searchInput.addEventListener('input', searchProducts);
